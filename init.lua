@@ -50,17 +50,20 @@ require("packer").startup(function(use)
 			})
 		end,
 	})
+	use({ "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" }) -- Code actions
 	use("numToStr/Comment.nvim") -- "gc" to comment visual regions/lines
 	use("ludovicchabant/vim-gutentags") -- Automatic tags management
+
 	-- UI to select things (files, grep results, open buffers...)
 	use({ "nvim-telescope/telescope.nvim", requires = { "nvim-lua/plenary.nvim" } })
 	use({ "nvim-telescope/telescope-fzf-native.nvim", run = "make" })
-	--  use { "ellisonleao/gruvbox.nvim" }
-	use({ "mhartington/oceanic-next" }) -- Newest hotness theme
+	use({ "LinArcX/telescope-env.nvim" })
+	use({ "Mofiqul/dracula.nvim" })
+
 	use({ "xiyaowong/nvim-transparent" }) -- Transparent bg
 	use("nvim-lualine/lualine.nvim") -- Fancier statusline
 	use("wfxr/minimap.vim") -- Minimap
-	use("elixir-editors/vim-elixir")
+	use("elixir-editors/vim-elixir") -- Add support for elixir
 	-- Add indentation guides even on blank lines
 	use("lukas-reineke/indent-blankline.nvim")
 	-- Add git related info in the signs columns and popups
@@ -69,6 +72,8 @@ require("packer").startup(function(use)
 	use("nvim-treesitter/nvim-treesitter")
 	-- Additional textobjects for treesitter
 	use("nvim-treesitter/nvim-treesitter-textobjects")
+	use("andymass/vim-matchup")
+	use("jremmen/vim-ripgrep") -- Ripgrep for searching in project
 	use({
 		"ray-x/lsp_signature.nvim",
 		config = function()
@@ -87,18 +92,12 @@ require("packer").startup(function(use)
 			"b0o/SchemaStore.nvim",
 		},
 	})
-
 	use({
-
 		"williamboman/nvim-lsp-installer",
 		requires = "neovim/nvim-lspconfig",
-		--        config = function()
-		--          require("nvim-lsp-installer").setup {}
-		--            local lspconfig = require("lspconfig")
-		--           lspconfig.sumneko_lua.setup {}
-		--      end
-		-- }
 	})
+	use({ "leafgarland/typescript-vim" })
+	use({ "peitalin/vim-jsx-typescript" })
 	-- Nerdtree alternative.
 	use({ "ms-jpq/chadtree", branch = "chad" })
 	-- Fast af code completion.
@@ -106,7 +105,7 @@ require("packer").startup(function(use)
 	use({ "ms-jpq/coq.artifacts", branch = "artifacts" })
 	use({ "ms-jpq/coq.thirdparty", branch = "3p" })
 	use("github/copilot.vim")
-	use({ "iamcco/markdown-preview.nvim" })
+	use({ "iamcco/markdown-preview.nvim" }) -- Preview server for md files
 end)
 
 vim.opt.tabstop = 2
@@ -139,9 +138,9 @@ vim.wo.signcolumn = "yes"
 --Set colorscheme
 vim.o.termguicolors = true
 vim.opt.background = "dark"
-vim.cmd([[colorscheme OceanicNext]])
--- vim.cmd [[set guifont=Operator\ Mono\ LigFont:h14]]
--- vim.cmd [[set guifont=Operator\ Mono\ Lig:h14]]
+
+-- vim.cmd([[colorscheme OceanicNext]])
+vim.cmd([[colorscheme dracula]])
 vim.cmd([[set guifont=Operator\ Mono\ \Lig\,MesloLGS\ NF:h14]])
 
 -- Set completeopt to have a better completion experience
@@ -151,7 +150,7 @@ vim.o.completeopt = "menuone,noselect"
 require("lualine").setup({
 	options = {
 		icons_enabled = false,
-		theme = "onedark",
+		theme = "dracula",
 		component_separators = "|",
 		section_separators = "",
 	},
@@ -160,6 +159,22 @@ require("lualine").setup({
 --Enable Comment.nvim
 require("Comment").setup()
 
+vim.cmd([[autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact]])
+vim.cmd([[hi tsxTagName guifg=#E06C75]])
+vim.cmd([[hi tsxComponentName guifg=#E06C75]])
+vim.cmd([[hi tsxCloseComponentName guifg=#E06C75]])
+
+vim.cmd([[hi tsxTypes guifg=#abcdef]])
+
+vim.cmd([[hi tsxCloseString guifg=#F99575]])
+vim.cmd([[hi tsxCloseTag guifg=#F99575]])
+vim.cmd([[hi tsxCloseTagName guifg=#F99575]])
+vim.cmd([[hi tsxAttributeBraces guifg=#F99575]])
+vim.cmd([[hi tsxEqual guifg=#F99575]])
+
+vim.cmd([[hi ReactState guifg=#C176A17]])
+
+vim.cmd([[hi tsxAttrib guifg=#F8BD7F cterm=italic]])
 --Remap space as leader key
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 vim.g.mapleader = " "
@@ -219,6 +234,8 @@ require("telescope").setup({
 	},
 })
 
+require("telescope").load_extension("env")
+
 -- Enable telescope fzf native
 require("telescope").load_extension("fzf")
 
@@ -242,6 +259,11 @@ vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles)
 require("nvim-treesitter.configs").setup({
 	highlight = {
 		enable = true, -- false will disable the whole extension
+	},
+	matchup = {
+		enable = true, -- mandatory, false will disable the whole extension
+		disable = { "c", "ruby" }, -- optional, list of language that will be disabled
+		-- [options]
 	},
 	incremental_selection = {
 		enable = true,
@@ -305,4 +327,13 @@ vim.cmd([[set clipboard=unnamedplus]])
 -- Coq thirdparty plugins
 require("coq_3p")({
 	{ src = "copilot", short_name = "COP", accept_key = "<c-f>" },
+})
+
+local group = vim.api.nvim_create_augroup("__env", { clear = true })
+vim.api.nvim_create_autocmd("BufEnter", {
+	pattern = ".env",
+	group = group,
+	callback = function(args)
+		vim.diagnostic.disable(args.buf)
+	end,
 })

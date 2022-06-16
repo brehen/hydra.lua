@@ -4,7 +4,8 @@ local lsp_ts_utils = require("nvim-lsp-ts-utils")
 
 local function setup_lsp_ts_utils(client)
 	lsp_ts_utils.setup({
-		auto_inlay_hints = false,
+		-- What does this do?
+		auto_inlay_hints = true,
 	})
 	lsp_ts_utils.setup_client(client)
 end
@@ -25,4 +26,3 @@ M.config = vim.tbl_extend(
 )
 
 return M
-

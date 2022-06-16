@@ -18,6 +18,7 @@ local server_configs = {
 	cssls = default_server_config,
 	svelte = default_server_config,
 	elixirls = default_server_config,
+	tailwindcss = default_server_config,
 	eslint = default_server_config,
 	yamlls = default_server_config,
 	vimls = default_server_config,
