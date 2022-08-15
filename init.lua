@@ -50,6 +50,7 @@ require("packer").startup(function(use)
 			})
 		end,
 	})
+	use({ "chrisbra/Colorizer" })
 	use({ "weilbith/nvim-code-action-menu", cmd = "CodeActionMenu" }) -- Code actions
 	use("numToStr/Comment.nvim") -- "gc" to comment visual regions/lines
 	use("ludovicchabant/vim-gutentags") -- Automatic tags management
@@ -106,6 +107,11 @@ require("packer").startup(function(use)
 	use({ "ms-jpq/coq.thirdparty", branch = "3p" })
 	use("github/copilot.vim")
 	use({ "iamcco/markdown-preview.nvim" }) -- Preview server for md files
+	-- Debugger
+	use({ "mfussenegger/nvim-dap" })
+	use({ "nvim-telescope/telescope-dap.nvim" })
+
+	use({ "Pocco81/DAPInstall.nvim" })
 end)
 
 vim.opt.tabstop = 2
@@ -159,7 +165,8 @@ require("lualine").setup({
 --Enable Comment.nvim
 require("Comment").setup()
 
-vim.cmd([[autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescriptreact]])
+vim.cmd([[autocmd BufWritePost *.heex silent !mix format <afile>]])
+vim.cmd([[autocmd BufNewFile,BufRead *.tsx set filetype=typescriptreact]])
 vim.cmd([[hi tsxTagName guifg=#E06C75]])
 vim.cmd([[hi tsxComponentName guifg=#E06C75]])
 vim.cmd([[hi tsxCloseComponentName guifg=#E06C75]])
@@ -225,6 +232,7 @@ require("gitsigns").setup({
 -- Telescope
 require("telescope").setup({
 	defaults = {
+		file_ignore_patterns = { "node_modules", "deps", "_build", "priv" },
 		mappings = {
 			i = {
 				["<C-u>"] = false,
