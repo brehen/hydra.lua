@@ -16,7 +16,11 @@ M.sources = {
 	null_ls.builtins.formatting.shfmt,
 	null_ls.builtins.diagnostics.hadolint,
 	null_ls.builtins.diagnostics.markdownlint,
+	null_ls.builtins.formatting.markdownlint,
+	null_ls.builtins.diagnostics.pylint,
+	null_ls.builtins.formatting.black, -- Python formatting
 	null_ls.builtins.diagnostics.write_good,
+	null_ls.builtins.formatting.gofmt, -- Go format
 	--	null_ls.builtins.diagnostics.misspell,
 	--	null_ls.builtins.formatting.gofumpt,
 }

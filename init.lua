@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd(
 require("packer").startup(function(use)
 	use("wbthomason/packer.nvim") -- Package manager
 	--  use 'tpope/vim-fugitive' -- Git commands in nvim
-	use("tpope/vim-rhubarb") -- Fugitive-companion to interact with github
+        --  use "tpope/vim-rhubarb" -- Fugitive-companion to interact with github
 	use("jeffkreeftmeijer/vim-numbertoggle") -- Auto toggle hybrid number mode
 	use({
 		"folke/which-key.nvim",
@@ -159,12 +159,23 @@ require("lualine").setup({
 		theme = "dracula",
 		component_separators = "|",
 		section_separators = "",
+		show_filename_only = false,
+	},
+	sections = {
+		lualine_a = {
+			{
+				"filename",
+				file_status = true,
+				path = 2,
+			},
+		},
 	},
 })
 
 --Enable Comment.nvim
 require("Comment").setup()
 
+vim.cmd([[autocmd BufWritePost *.py silent !black <afile>]])
 vim.cmd([[autocmd BufWritePost *.heex silent !mix format <afile>]])
 vim.cmd([[autocmd BufNewFile,BufRead *.tsx set filetype=typescriptreact]])
 vim.cmd([[hi tsxTagName guifg=#E06C75]])
