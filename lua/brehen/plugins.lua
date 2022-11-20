@@ -33,9 +33,11 @@ packer.startup(function(use)
 	use("kyazdani42/nvim-web-devicons") -- File icons
 	use("nvim-telescope/telescope.nvim")
 	use("nvim-telescope/telescope-file-browser.nvim")
+	use("BurntSushi/ripgrep")
 	use("windwp/nvim-autopairs")
 	use("windwp/nvim-ts-autotag")
 	use("folke/zen-mode.nvim")
+	use({ "folke/which-key.nvim" })
 	use({
 		"iamcco/markdown-preview.nvim",
 		run = function()
@@ -43,7 +45,23 @@ packer.startup(function(use)
 		end,
 	})
 	use("akinsho/nvim-bufferline.lua")
-	-- use 'github/copilot.vim'
+	use({
+		"zbirenbaum/copilot.lua",
+		event = "VimEnter",
+		config = function()
+			vim.defer_fn(function()
+				require("copilot").setup()
+			end, 100)
+		end,
+	})
+	use({
+		"zbirenbaum/copilot-cmp",
+		after = { "copilot.lua" },
+		config = function()
+			require("copilot_cmp").setup()
+		end,
+	})
+	--	use("brehen/headwind.nvim")
 
 	use("lewis6991/gitsigns.nvim")
 	use("dinhhuy258/git.nvim") -- For git blame & browse
