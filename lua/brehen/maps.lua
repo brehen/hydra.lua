@@ -1,31 +1,23 @@
 local keymap = vim.keymap
 
 -- Set leader key to space
-keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
-
--- Increment / Decrement on line
-keymap.set("n", "+", "<C-a>")
-keymap.set("n", "_", "<C-x>")
+vim.g.mapleader = " "
 
 -- Delete a word backwards
 keymap.set("n", "dw", 'vb"_d')
 
 -- Select all
-keymap.set("n", "<leader>a", "gg<S-v>G")
+keymap.set("n", "<leader>A", "gg<S-v>G")
 
 -- New tab
 keymap.set("n", "te", ":tabedit")
 
 -- Split window
-keymap.set("n", "ss", ":split<Return><C-w>w")
-keymap.set("n", "sv", ":vsplit<Return><C-w>w")
+keymap.set("n", "<C-s>s", ":split<Return><C-w>w")
+keymap.set("n", "<C-s>v", ":vsplit<Return><C-w>w")
 
 -- Move window
 keymap.set("n", "<C-Space>", "<C-w>w")
-keymap.set("", "sh", "<C-w>h")
-keymap.set("", "sk", "<C-w>k")
-keymap.set("", "sj", "<C-w>j")
-keymap.set("", "sl", "<C-w>l")
 
 -- Resize window
 keymap.set("n", "<C-w><left>", "<C-w><")
