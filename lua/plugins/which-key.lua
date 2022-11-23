@@ -1,7 +1,15 @@
-local status, which_key = pcall(require, "which-key")
+local status, wk = pcall(require, "which-key")
 
 if not status then
-	return
+  return
 end
 
-which_key.setup({})
+wk.setup({
+  window = {
+    border = "double",
+  },
+})
+
+wk.register({
+  ["<leader>ns"] = { ":Ray<CR>", "Capture selected code block and send to ray.so", mode = "v" },
+})
