@@ -226,6 +226,17 @@ local buttons = {
 -- Foot must be a table so that its height is correctly measured
 local num_plugins_loaded = #vim.fn.globpath(vim.fn.stdpath("data") .. "/site/pack/packer/start", "*", 0, 1)
 
+local currentFolder = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+
+local cwd = {
+	type = "text",
+	val = { "~ " .. currentFolder .. " ~" },
+	opts = {
+		position = "center",
+		hl = "Comment",
+	},
+}
+
 local footer = {
 	type = "text",
 	val = { num_plugins_loaded .. " plugins ﮣ loaded" },
@@ -240,6 +251,8 @@ local opts = {
 		{ type = "padding", val = 2 },
 		header,
 		{ type = "padding", val = 3 },
+		cwd,
+		{ type = "padding", val = 1 },
 		greetHeading,
 		footer,
 		{ type = "padding", val = 2 },
