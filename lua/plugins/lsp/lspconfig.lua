@@ -5,6 +5,8 @@ if not status then
 	return
 end
 
+local navic = require("nvim-navic")
+
 local protocol = require("vim.lsp.protocol")
 
 -- Use an on_attach function to only map the following keys
@@ -78,8 +80,16 @@ nvim_lsp.flow.setup({
 	capabilities = capabilities,
 })
 
+navic.setup({
+	highlight = true,
+})
+
 nvim_lsp.tsserver.setup({
-	on_attach = on_attach,
+	on_attach = function(client, bufnr)
+		on_attach(client, bufnr)
+		navic.attach(client, bufnr)
+		vim.wo.winbar = " %{%v:lua.require'nvim-navic'.get_location()%}"
+	end,
 	filetypes = { "typescript", "typescriptreact", "typescript.tsx" },
 	cmd = { "typescript-language-server", "--stdio" },
 	capabilities = capabilities,

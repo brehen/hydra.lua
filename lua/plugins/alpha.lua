@@ -11,17 +11,11 @@ end
 local dashboard = require("alpha.themes.dashboard")
 local nvim_web_devicons = require("nvim-web-devicons")
 local cdir = vim.fn.getcwd()
+local asciiTable = require("plugins.ascii")
 
-local function getGreeting(name)
+local function getBasedOnTime(table)
 	local tableTime = os.date("*t")
 	local hour = tableTime.hour
-	local greetingsTable = {
-		[1] = "  Sleep well",
-		[2] = "  Good morning",
-		[3] = "  Good afternoon",
-		[4] = "  Good evening",
-		[5] = "望 Good night",
-	}
 	local greetingIndex = 0
 	if hour == 23 or hour < 7 then
 		greetingIndex = 1
@@ -34,11 +28,19 @@ local function getGreeting(name)
 	elseif hour >= 21 then
 		greetingIndex = 5
 	end
-	return greetingsTable[greetingIndex] .. ", " .. name
+	return table[greetingIndex]
 end
 
 local userName = "Marius"
-local greeting = getGreeting(userName)
+local greetingsTable = {
+	[1] = "  Sleep well",
+	[2] = "  morning...",
+	[3] = "  Good afternoon",
+	[4] = "  Good evening",
+	[5] = "望 Good night",
+}
+local greeting = getBasedOnTime(greetingsTable)
+local header = getBasedOnTime(asciiTable)
 
 local greetHeading = {
 	type = "text",
@@ -158,28 +160,6 @@ local function mru(start, cwd, items_number, opts)
 	}
 end
 
-local header = {
-	type = "text",
-	val = {
-		" ",
-		"⠄⠄⣴⣶⣤⡤⠦⣤⣀⣤⠆⠄⠄⠄⠄⠄⣈⣭⣭⣿⣶⣿⣦⣼⣆⠄⠄⠄⠄⠄⠄⠄⠄",
-		"⠄⠄⠄⠉⠻⢿⣿⠿⣿⣿⣶⣦⠤⠄⡠⢾⣿⣿⡿⠋⠉⠉⠻⣿⣿⡛⣦⠄⠄⠄⠄⠄⠄",
-		"⠄⠄⠄⠄⠄⠈⠄⠄⠄⠈⢿⣿⣟⠦⠄⣾⣿⣿⣷⠄⠄⠄⠄⠻⠿⢿⣿⣧⣄⠄⠄⠄⠄",
-		"⠄⠄⠄⠄⠄⠄⠄⠄⠄⠄⣸⣿⣿⢧⠄⢻⠻⣿⣿⣷⣄⣀⠄⠢⣀⡀⠈⠙⠿⠄⠄⠄⠄",
-		"⠄⠄⢀⠄⠄⠄⠄⠄⠄⢠⣿⣿⣿⠈⠄⠄⠡⠌⣻⣿⣿⣿⣿⣿⣿⣿⣛⣳⣤⣀⣀⠄⠄",
-		"⠄⠄⢠⣧⣶⣥⡤⢄⠄⣸⣿⣿⠘⠄⠄⢀⣴⣿⣿⡿⠛⣿⣿⣧⠈⢿⠿⠟⠛⠻⠿⠄⠄",
-		"⠄⣰⣿⣿⠛⠻⣿⣿⡦⢹⣿⣷⠄⠄⠄⢊⣿⣿⡏⠄⠄⢸⣿⣿⡇⠄⢀⣠⣄⣾⠄⠄⠄",
-		"⣠⣿⠿⠛⠄⢀⣿⣿⣷⠘⢿⣿⣦⡀⠄⢸⢿⣿⣿⣄⠄⣸⣿⣿⡇⣪⣿⡿⠿⣿⣷⡄⠄",
-		"⠙⠃⠄⠄⠄⣼⣿⡟⠌⠄⠈⠻⣿⣿⣦⣌⡇⠻⣿⣿⣷⣿⣿⣿⠐⣿⣿⡇⠄⠛⠻⢷⣄",
-		"⠄⠄⠄⠄⠄⢻⣿⣿⣄⠄⠄⠄⠈⠻⣿⣿⣿⣷⣿⣿⣿⣿⣿⡟⠄⠫⢿⣿⡆⠄⠄⠄⠁",
-		"⠄⠄⠄⠄⠄⠄⠻⣿⣿⣿⣿⣶⣶⣾⣿⣿⣿⣿⣿⣿⣿⣿⡟⢀⣀⣤⣾⡿⠃⠄⠄⠄⠄",
-		"⠄⠄⠄⠄⢰⣶⠄⠄⣶⠄⢶⣆⢀⣶⠂⣶⡶⠶⣦⡄⢰⣶⠶⢶⣦⠄⠄⣴⣶⠄⠄⠄⠄",
-		"⠄⠄⠄⠄⢸⣿⠶⠶⣿⠄⠈⢻⣿⠁⠄⣿⡇⠄⢸⣿⢸⣿⢶⣾⠏⠄⣸⣟⣹⣧⠄⠄⠄",
-		"⠄⠄⠄⠄⠸⠿⠄⠄⠿⠄⠄⠸⠿⠄⠄⠿⠷⠶⠿⠃⠸⠿⠄⠙⠷⠤⠿⠉⠉⠿⠆⠄⠄",
-	},
-	opts = { position = "center" },
-}
-
 local section_mru = {
 	type = "group",
 	val = {
@@ -248,9 +228,7 @@ local footer = {
 
 local opts = {
 	layout = {
-		{ type = "padding", val = 2 },
 		header,
-		{ type = "padding", val = 3 },
 		cwd,
 		{ type = "padding", val = 1 },
 		greetHeading,
