@@ -209,4 +209,3 @@ packer.startup(function(use)
   -- 	end,
   -- })
 end)
-require("elixir").setup()
