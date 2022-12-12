@@ -1,5 +1,7 @@
 local elixir = require("elixir")
 
+print("h")
+
 elixir.setup({
   -- specify a repository and branch
   repo = "mhanberg/elixir-ls", -- defaults to elixir-lsp/elixir-ls
@@ -8,7 +10,7 @@ elixir.setup({
 
   -- alternatively, point to an existing elixir-ls installation (optional)
   -- not currently supported by elixirls, but can be a table if you wish to pass other args `{"path/to/elixirls", "--foo"}`
-  cmd = "/usr/local/bin/elixir-ls.sh",
+  cmd = "/usr/local/bin/elixir-ls/language_server.sh",
 
   -- default settings, use the `settings` function to override settings
   settings = elixir.settings({
@@ -49,6 +51,6 @@ elixir.setup({
     vim.cmd([[smap <expr> <C-l> vsnip#available(1) ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>']])
 
     -- update capabilities for nvim-cmp: https://github.com/hrsh7th/nvim-cmp
-    require("cmp_nvim_lsp").update_capabilities(capabilities)
+    require("cmp_nvim_lsp").default_capabilities()
   end,
 })

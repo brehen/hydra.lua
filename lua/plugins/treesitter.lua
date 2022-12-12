@@ -59,7 +59,7 @@ ts.setup({
       },
     },
   },
-  ensure_installed = "elixir",
+  ensure_installed = "all",
   autotag = {
     enable = true,
   },

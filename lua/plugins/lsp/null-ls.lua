@@ -62,6 +62,8 @@ null_ls.setup({
     -- Elixir
     null_ls.builtins.formatting.mix,
     null_ls.builtins.diagnostics.credo,
+    -- Tailwind
+    null_ls.builtins.formatting.rustywind,
   },
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then

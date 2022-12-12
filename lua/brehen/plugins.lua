@@ -4,6 +4,8 @@ if not status then
   return
 end
 
+-- A new color scheme
+
 vim.cmd([[packadd packer.nvim]])
 -- vim.cmd([[colorscheme dracula]])
 -- vim.cmd([[colorscheme gruvbox]])
@@ -78,7 +80,11 @@ packer.startup(function(use)
   use({
     "nvim-treesitter/nvim-treesitter",
     run = function()
-      require("nvim-treesitter.install").update({ with_sync = true })
+      local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
+      ts_update()
+    end,
+    config = function()
+      require("plugins.treesitter")
     end,
   })
   use("nvim-treesitter/nvim-treesitter-textobjects")
@@ -145,12 +151,28 @@ packer.startup(function(use)
       require("plugins.bufferline")
     end,
   })
-  use({ "zbirenbaum/copilot.lua" })
+  use({
+    "zbirenbaum/copilot.lua",
+    event = "VimEnter",
+    config = function()
+      vim.defer_fn(function()
+        require("copilot").setup({
+          suggestion = {
+            auto_trigger = true,
+            keymap = {
+              accept = "<C-f>",
+              decline = "<C-e>",
+            },
+          },
+        })
+      end, 100)
+    end,
+  })
   use({
     "zbirenbaum/copilot-cmp",
     after = { "copilot.lua" },
     config = function()
-      require("copilot_cmp").setup()
+      require("plugins.copilot")
     end,
   })
   --	use("brehen/headwind.nvim")
@@ -192,13 +214,13 @@ packer.startup(function(use)
   })
   --	use("elixir-editors/vim-elixir") -- Add support for elixir
   use("leafOfTree/vim-svelte-plugin")
-  use({
-    "mhanberg/elixir.nvim",
-    requires = { "nvim-lua/plenary.nvim" },
-    config = function()
-      require("plugins.elixir")
-    end,
-  })
+  -- use({
+  --   "mhanberg/elixir.nvim",
+  --   requires = { "nvim-lua/plenary.nvim" },
+  --   config = function()
+  --     require("plugins.elixir")
+  --   end,
+  -- })
   -- Github
   -- use("ldelossa/litee.nvim")
   -- use({
