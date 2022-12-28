@@ -38,9 +38,9 @@ packer.startup(function(use)
   }) -- Completion
   use({
     "neovim/nvim-lspconfig",
-    config = function()
-      require("plugins.lsp.lspconfig")
-    end,
+    -- config = function()
+    --   require("plugins.lsp.lspconfig")
+    -- end,
   }) -- LSP
   use({
     "jose-elias-alvarez/null-ls.nvim",
@@ -70,12 +70,22 @@ packer.startup(function(use)
     end,
   })
   use({
-    -- LSP UIs
-    "glepnir/lspsaga.nvim",
+    "ray-x/navigator.lua",
+    requires = {
+      { "ray-x/guihua.lua", run = "cd lua/fzy && make" },
+      { "neovim/nvim-lspconfig" },
+    },
     config = function()
-      require("plugins.lsp.lspsaga")
+      require("plugins.navigator")
     end,
   })
+  -- use({
+  --   -- LSP UIs
+  --   "glepnir/lspsaga.nvim",
+  --   config = function()
+  --     require("plugins.lsp.lspsaga")
+  --   end,
+  -- })
   use("L3MON4D3/LuaSnip")
   use({
     "nvim-treesitter/nvim-treesitter",

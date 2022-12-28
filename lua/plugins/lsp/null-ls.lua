@@ -30,26 +30,12 @@ null_ls.setup({
         "typescriptreact",
       },
     }),
-    null_ls.builtins.diagnostics.eslint_d,
-    null_ls.builtins.formatting.eslint_d.with({
-      filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "svelte",
-      },
-    }),
-    null_ls.builtins.code_actions.eslint_d.with({
-
-      filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "svelte",
-      },
-    }),
+    -- null_ls.builtins.diagnostics.eslint_d,
+    -- null_ls.builtins.formatting.eslint_d,
+    -- null_ls.builtins.code_actions.eslint_d,
+    -- null_ls.builtins.diagnostics.xo,
+    -- null_ls.builtins.formatting.xo,
+    -- null_ls.builtins.code_actions.xo,
     null_ls.builtins.formatting.trim_whitespace.with({
       filetypes = { "plantuml" },
     }),
@@ -83,6 +69,8 @@ null_ls.setup({
     null_ls.builtins.formatting.rustywind,
     -- Rust
     null_ls.builtins.formatting.rustfmt,
+    -- Golang
+    null_ls.builtins.diagnostics.golangci_lint,
   },
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then
