@@ -4,7 +4,7 @@ local opt = vim.opt
 
 vim.scriptencoding = "utf-8"
 opt.encoding = "utf-8"
-opt.fileencoding = "utf-8"
+--opt.fileencoding = "utf-8"
 
 vim.wo.number = true
 
@@ -62,3 +62,24 @@ opt.formatoptions:append({ "r" })
 
 -- Ray so options
 vim.g.ray_options = "colors=breeze&padding=64"
+
+-- theme
+-- vim.cmd([[colorscheme catppuccin-macchiato]])
+
+-- Highlights
+vim.opt.cursorline = true
+vim.opt.termguicolors = true
+vim.opt.winblend = 0
+vim.opt.wildoptions = "pum"
+vim.opt.pumblend = 5
+vim.opt.background = "dark"
+vim.api.nvim_set_hl(0, "CmpItemKindCopilot", { fg = "#6CC644" })
+
+local has = vim.fn.has
+
+if has("win32") then
+  vim.opt.clipboard:prepend({ "unnamed", "unnamedplus" })
+end
+if has("macunix") then
+  vim.opt.clipboard:append({ "unnamedplus" })
+end

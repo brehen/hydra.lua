@@ -1,15 +1,15 @@
-require("brehen.base")
-require("brehen.highlights")
-require("brehen.maps")
-require("brehen.plugins")
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
-local has = vim.fn.has
-local is_mac = has("macunix")
-local is_win = has("win32")
+require("plugin")
+require("base")
 
-if is_mac then
-  require("brehen.macos")
-end
-if is_win then
-  require("brehen.windows")
-end
+require("dashboard.alpha")
+
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    require("commands")
+    require("maps")
+  end,
+})
